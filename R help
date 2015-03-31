@@ -14,3 +14,15 @@ setnames(data,old=c("X17.99", "X0.1184", "X0.2776"),new=c("radius_mean","area_me
 > disproportionality.data <- read.csv(textConnection(disproportionality.data))
 > str(disproportionality.data)
 
+-- Creating a normalization functionto rescale all the variables to a standard range of values
+
+normalize  =  function(x) {
+return((x-min(x))/(max(x)-min(x)))
+}
+
+-- lapply() takes a list and applies the function to each item in the list
+pati_n = as.data.frame(lapply(pati[2:31],normalize))
+
+--scale() will rescore the values using Z-scale standardization
+pati_Z=as.data.frame(scale(pati[-1]))
+summary(pati_z$area_mean)--> z-scale standardized values
