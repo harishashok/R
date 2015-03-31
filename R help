@@ -1,0 +1,16 @@
+-- To replace variable names with aliases
+
+library(data.table)
+
+setnames(data,old=c("X17.99", "X0.1184", "X0.2776"),new=c("radius_mean","area_mean","smooth_mean"))
+
+ table(pati$radius_mean)
+ 
+ --To import a dataset in Github into R console
+ 
+ library(foreign)
+> url<-"https://github.com/stedy/Machine-Learning-with-R-datasets/blob/master/wisc_bc_data.csv"
+> disproportionality.data <- getURL(url)
+> disproportionality.data <- read.csv(textConnection(disproportionality.data))
+> str(disproportionality.data)
+
