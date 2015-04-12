@@ -4,7 +4,7 @@
 airlines=read.csv("AirlinesCluster.csv")
 
 ****why should we normalize the data before clustering?????*********
-****If we don't normalize the data, the clustering will be dominated by the variables that are on a larger scale.***** 
+****If we don't normalize the data, the clustering will be dominated by the variables that are on a larger scale'.***** 
 
 --Normalizing the data by preProcessing()
 library(caret)
