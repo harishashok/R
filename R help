@@ -37,7 +37,17 @@ library(psych)
 -- To add ggplots
 library(ggplot2)
 ***Make sure the ggplot has the following paramerters. 1) Data 2) Aesthetic property (shape,color ..) 3) Geometric Property(lines,boxes..)**
+scatterPlot= ggplot(WHO, aes(x= var1, y= var2))
+scatterPlot + geom_point()   -- Plots with points
+scatterPlot + geom_line()    -- Plots with lines
+scatterPlot + geom_point(color = "blue", size = 3, shape = 17)   -- to create plots with properties (17= triangles)
+            + ggtitle("name")
 
+-- TO save the plot to a file
+Load the plot command into a variable
+pdf("Myplot.pdf")
+print(plotname)
+dev.off() -- to close the file
 
 
 
