@@ -32,3 +32,17 @@ pairs(insurance[c("age","bmi","children","charges")])
 >
 library(psych)
 >pairs.panels(insurance[c("age","bmi","children","charges")])
+
+------------------------------------------------------------------------------------
+-- To add ggplots
+library(ggplot2)
+***Make sure the ggplot has the following paramerters. 1) Data 2) Aesthetic property (shape,color ..) 3) Geometric Property(lines,boxes..)**
+
+
+
+
+
+
+
+
+
