@@ -49,6 +49,14 @@ pdf("Myplot.pdf")
 print(plotname)
 dev.off() -- to close the file
 
+# Make a heatmap:
+ggplot(DayHourCounts, aes(x = Hour, y = Var1)) + geom_tile(aes(fill = Freq))
+# Change the label on the legend, and get rid of the y-label:
+ggplot(DayHourCounts, aes(x = Hour, y = Var1)) + geom_tile(aes(fill = Freq)) + scale_fill_gradient(name="Total MV Thefts") + theme(axis.title.y = element_blank())
+# Change the color scheme
+ggplot(DayHourCounts, aes(x = Hour, y = Var1)) + geom_tile(aes(fill = Freq)) + scale_fill_gradient(name="Total MV Thefts", low="white", high="red") + theme(axis.title.y = element_blank())
+
+
 
 
 
