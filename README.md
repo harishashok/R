@@ -14,4 +14,6 @@ Random Forest Algorithm - library used randomForest.
 helpMaps and helpPlots -- Contains the script for plots, generating geographic maps and heat maps
 Library used -- ggplot2, ggmap, maps
 
+helpPlots2 -- contains additional plots for worldmaps and barcharts
+
 
