@@ -16,4 +16,4 @@ Library used -- ggplot2, ggmap, maps
 
 helpPlots2 -- contains additional plots for worldmaps and barcharts
 
-
+Graph plots-- used to plot the nodes and vertices in network plotting. as in Graph. Real time data used are from facebook, twitter etc.  library used ---- igraph
