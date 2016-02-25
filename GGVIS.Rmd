@@ -1,0 +1,167 @@
+---
+title: "Datacamp GGVIS tutorial"
+output:  
+      html_document:  
+        keep_md: true  
+---
+
+
+
+```{r}
+library(ggvis)
+# Change the code below to make a graph with red points
+mtcars %>% ggvis(~wt, ~mpg, fill := "red") %>% layer_points()
+
+# Change the code below draw smooths instead of points
+mtcars %>% ggvis(~wt, ~mpg) %>% layer_smooths()
+
+# Change the code below to make a graph containing both points and a smoothed summary line
+mtcars %>% ggvis(~wt, ~mpg) %>% layer_points() %>% layer_smooths()
+```
+
+####SCATTERPLOT
+```{r}
+# Make a scatterplot of the pressure dataset
+pressure %>% ggvis(~temperature, ~pressure) %>% layer_points()
+
+# Adapt the code you wrote for the first challenge: show bars instead of points
+pressure %>% ggvis(~temperature, ~pressure) %>% layer_bars()
+
+# Adapt the code you wrote for the first challenge: show lines instead of points
+pressure %>% ggvis(~temperature, ~pressure) %>% layer_lines()
+
+# Adapt the code you wrote for the first challenge: map the fill property to the temperature variable
+pressure %>% ggvis(~temperature, ~pressure, fill = ~ "temperature") %>% layer_points()
+
+# Extend the code you wrote for the previous challenge: map the size property to the pressure variable
+pressure %>% ggvis(~temperature, ~pressure, fill =~ "temperature", size =~ "pressure") %>% layer_points()
+```
+
+```{r}
+# Rewrite the code with the pipe operator  
+faithful %>% 
+  ggvis(~waiting, ~eruptions) %>% 
+  layer_points()
+
+# Modify this graph to map the size property to the pressure variable
+pressure %>% ggvis(~temperature, ~pressure, size = ~pressure) %>% layer_points()
+
+# Modify this graph by setting the size property
+pressure %>% ggvis(~temperature, ~pressure, size := 100) %>% layer_points()
+
+# Fix this code to set the fill property to red
+pressure %>% ggvis(~temperature, ~pressure, fill := "red") %>% layer_points()
+
+```
+#### PROPERTIES FOR POINTS  
+
+You can manipulate many different properties when using the points mark, including x, y, fill, fillOpacity, opacity, shape, size, stroke, strokeOpacity, andstrokeWidth.
+
+The shape property in turn recognizes several different values: circle (default), square, cross, diamond, triangle-up, and triangle-down.
+```{r}
+# Change the code to set the fills using pressure$black. pressure$black is loaded into workspace.
+black <- "black"
+pressure$black <- pressure$temperature
+pressure %>% 
+  ggvis(~temperature, ~pressure, 
+        fill := ~black) %>% 
+  layer_points()
+
+# Plot the faithful data as described in the second instruction
+faithful %>% 
+  ggvis(~waiting, ~eruptions, 
+        size = ~eruptions, opacity := 0.5, 
+        fill := "blue", stroke := "black") %>% 
+  layer_points()
+
+# Plot the faithful data as described in the third instruction
+faithful %>% 
+  ggvis(~waiting, ~eruptions, 
+        fillOpacity = ~eruptions, size := 100,  
+        fill := "red", stroke := "red", shape := "cross") %>% 
+  layer_points()
+
+```
+
+####PROPERTIES FOR LINES  
+
+This mark type responds to, among others, x, y, fill, fillOpacity, opacity, shape, size, stroke, strokeOpacity, andstrokeWidth.
+
+Similar to points, lines have specific properties; they respond to: x, y, fill, fillOpacity, opacity, stroke, strokeDash, strokeOpacity, and strokeWidth. As you can see, most of them are common to the properties for points, some are missing (e.g., no size property) and others are new (e.g., strokeDash).
+
+```{r}
+# Change the code below to use the lines mark
+pressure %>% ggvis(~temperature, ~pressure) %>% layer_lines()
+
+# Set the properties described in the second instruction in the graph below
+pressure %>% 
+  ggvis(~temperature, ~pressure, 
+        stroke := "red", strokeWidth := 2, strokeDash := 6) %>% 
+  layer_lines()
+```
+###DISPLAYING MODEL FITS  
+
+compute_model_prediction() is a useful function to use with line graphs. It takes a data frame as input and returns a new data frame as output. The new data frame will contain the x and y values of a line fitted to the data in the original data frame.
+
+For example, the code below computes a line that shows the relationship between the eruptions and waiting variables of the faithful data set.
+
+Notice that compute_model_prediction() takes a couple of arguments. First we use the pipe operator to pass it the data set faithful. Then we provide an R formula, eruptions ~ waiting. An R formula contains two variables connected by a tilde, ~. compute_model_prediction() will use the variable on the left as the y variable for the line, and it will use the variable on the right as the x variable for the line.
+
+Finally, compute_model_prediction() takes a model argument. This is the name of the R modelling function that compute_model_prediction() should use to calculate the line. lm() is R's function for building linear models. compute_smooth() is a special case of compute_model_prediction() where the model argument is set to loess by default. In this case the function will create a smoothed set of points.
+```{r}
+faithful %>%
+  compute_model_prediction(eruptions ~ waiting, model = "lm")
+
+mtcars %>% compute_smooth(mpg~wt)
+```
+####Compute_smooth() model fits
+compute_smooth() always returns a data set with two columns, one named pred_ and one named resp_. As a result, it is very easy to use compute_smooth() to plot a smoothed line of your data. For example, you can extend your code from the last exercise to plot the results of compute_smooth() as a line graph.
+
+Calling compute_smooth() can be a bit of a hassle, so ggvis includes a layer that automatically calls compute_smooth() in the background and plots the results as a smoothed line. That layer is layer_smooths().
+```{r}
+# Use 'ggvis()' and 'layer_lines()' to plot the results of compute smooth
+mtcars %>% compute_smooth(mpg ~ wt) %>% ggvis(~pred_, ~resp_) %>% layer_lines()
+
+# Recreate the graph you coded above with 'ggvis()' and 'layer_smooths()' 
+mtcars %>% ggvis(~wt, ~mpg) %>% layer_smooths()
+
+# Extend the code for the second plot and add 'layer_points()' to the graph
+mtcars %>% ggvis(~wt, ~mpg) %>% layer_points() %>% layer_smooths()
+
+```
+####HISTOGRAMS  
+
+```{r}
+# Build a histogram of the waiting variable of the faithful data set.
+faithful %>% ggvis(~waiting) %>% layer_histograms()
+
+# Build the same histogram, but with a binwidth of 5 units
+faithful %>% ggvis(~waiting) %>% layer_histograms(width = 5)
+```
+Behind the scenes, layer_histograms() calls compute_bin() to calculate these counts. You can calculate the same values by calling compute_bin() manually. compute_bin() requires at least two arguments: a data set (which you will provide with the %>% syntax), and a variable name to bin on. You can also pass compute_bin() a binwidth argument, just as you pass layer_histograms() a binwidth argument.
+
+compute_bin() returns a data frame that provides everything you need to build a histogram from scratch. Notice the similarity with previous cases: combining compute_smooth() and layer_points() had the exact same result as using layer_smooths() directly!
+```{r}
+# Transform the code below: just compute the bins instead of plotting a histogram.
+faithful %>% compute_bin(~waiting, width = 5)
+
+# Combine the solution to the first challenge with layer_rects() to build a histogram.
+faithful %>% 
+  compute_bin(~waiting, width = 5) %>% 
+  ggvis(x = ~xmin_, x2 = ~xmax_, y = 0, y2 = ~count_) %>% 
+  layer_rects()
+```
+
+####DENSITY PLOTS
+Density plots provide another way to display the distribution of a single variable. A density plot uses a line to display the density of a variable at each point in its range. You can think of a density plot as a continuous version of a histogram with a different y scale (although this is not exactly accurate).
+
+compute_density() takes two arguments, a data set and a variable name. It returns a data frame with two columns: pred_, the x values of the variable's density line, and resp_, the y values of the variable's density line.
+
+You can use layer_densities() to create density plots. Like layer_histograms() it calls the compute function that it needs in the background, so you do not need to worry about calling compute_density().
+```{r}
+# Combine compute_density() with layer_lines() to make a density plot of the waiting variable.
+faithful %>% compute_density(~waiting) %>% ggvis(~pred_, ~resp_) %>% layer_lines()
+
+# Build a density plot directly using layer_densities. Use the correct variables and properties.
+faithful %>% ggvis(~waiting, fill := "green") %>% layer_densities()
+```
